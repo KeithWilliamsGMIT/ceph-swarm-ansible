@@ -1,0 +1,5 @@
+- src: geerlingguy.docker
+
+- name: atosatto.docker-swarm
+  src: https://github.com/atosatto/ansible-dockerswarm
+  version: v2

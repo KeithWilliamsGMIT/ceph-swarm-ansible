@@ -1,0 +1,4 @@
+---
+root_out_destination: "./out"
+ceph_fs_directory: "/mnt/ceph"
+ceph_interface: "{{ ansible_default_ipv4['interface'] }}"

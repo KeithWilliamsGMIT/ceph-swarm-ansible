@@ -1,0 +1,44 @@
+---
+- name: Wait for Ceph manager service to start
+  command: docker service inspect --format {% raw %}'{{.Spec.Mode.Replicated.Replicas}}'{% endraw %} storage_mgr
+  register: manager_replica_count
+  until: manager_replica_count.stdout != '0'
+  retries: 20
+  delay: 10
+
+- name: Get Ceph manager task ID
+  command: docker service ps --filter 'desired-state=running' storage_mgr -q
+  register: task_id
+
+- name: Get Ceph manager node ID
+  command: docker inspect --format {% raw %}'{{ .NodeID }}'{% endraw %} {{ task_id.stdout }}
+  register: node_id
+
+- name: Get Ceph manager container ID
+  command: docker inspect --format {% raw %}'{{ .Status.ContainerStatus.ContainerID }}'{% endraw %} {{ task_id.stdout }}
+  register: container_id
+
+- name: Get Ceph manager node host
+  command: docker node inspect --format {% raw %}'{{ .Description.Hostname }}'{% endraw %} {{ node_id.stdout }}
+  register: node_host
+
+- name: Enable Ceph dashboard module on manager
+  command: docker exec {{ container_id.stdout }} ceph mgr module enable dashboard
+  delegate_to: "{{ node_host.stdout }}"
+
+- name: Create Ceph user on manager
+  command: docker exec {{ container_id.stdout }} ceph dashboard ac-user-create {{ ceph_user }} {{ ceph_password }} administrator
+  ignore_errors: yes
+  delegate_to: "{{ node_host.stdout }}"
+
+- name: Create self-signed certs for Ceph dashboard
+  command: docker exec {{ container_id.stdout }} ceph dashboard create-self-signed-cert
+  delegate_to: "{{ node_host.stdout }}"
+
+- name: Enable Prometheus endpoint on manager
+  command: docker exec {{ container_id.stdout }} ceph mgr module enable prometheus
+  delegate_to: "{{ node_host.stdout }}"
+
+- name: Restart the Ceph manager
+  command: docker exec {{ container_id.stdout }} ceph mgr fail mgr
+  delegate_to: "{{ node_host.stdout }}"

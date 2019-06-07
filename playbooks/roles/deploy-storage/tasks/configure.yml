@@ -1,0 +1,23 @@
+---
+- name: Get IDs of any Ceph monitor container
+  command: docker ps -qf name=storage_mon
+  register: monitor_container_id_output
+  until: monitor_container_id_output.stdout != ''
+  retries: 20
+  delay: 10
+
+- name: Create data pool in Ceph
+  command: docker exec {{ monitor_container_id_output.stdout_lines[0] }} ceph osd pool create cephfs_data 64
+
+- name: Create metadata pool in Ceph
+  command: docker exec {{ monitor_container_id_output.stdout_lines[0] }} ceph osd pool create cephfs_metadata 64
+
+- name: Enable a new filesystem
+  command: docker exec {{ monitor_container_id_output.stdout_lines[0] }} ceph fs new cephfs cephfs_metadata cephfs_data
+
+- name: Authorise read-write access for Swarm to root of new filesystem
+  command: docker exec {{ monitor_container_id_output.stdout_lines[0] }} ceph fs authorize cephfs client.swarm / rw
+  register: ceph_authorisation_secret_output
+
+- name: Parse and save Ceph authorisation secret to a file locally
+  local_action: copy content='{{ ceph_authorisation_secret_output.stdout_lines[1].split(" ")[2] }}' dest='{{ root_out_destination }}/ceph/secret'

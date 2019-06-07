@@ -1,0 +1,30 @@
+---
+- name: Install xfsprogs
+  apt:
+    name: xfsprogs
+    state: present
+
+- name: Unmount device
+  mount:
+    path: /dev/sdb
+    state: unmounted
+
+- name: Create a xfs filesystem on device
+  filesystem:
+    fstype: xfs
+    dev: '{{ device_path }}'
+    opts: -f -i size=2048
+
+- name: Create OSD directory
+  file:
+    path: /mnt/osd
+    state: directory
+    recurse: yes
+
+- name: Mount OSD directory
+  mount:
+    path: /mnt/osd
+    src: '{{ device_path }}'
+    fstype: xfs
+    opts: rw,noatime,inode64
+    state: mounted

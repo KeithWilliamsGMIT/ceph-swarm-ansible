@@ -1,0 +1,23 @@
+---
+- name: Install required python modules for docker
+  pip:
+    name: "{{ item.name }}"
+    version: "{{ item.version }}"
+    state: present
+  with_items:
+  - { name: docker-py, version: 1.10.6 }
+
+- name: Create directories for ceph
+  become: true
+  file:
+    path: "{{ item }}"
+    state: directory
+    recurse: yes
+  with_items:
+    - '{{ root_out_destination }}/ceph/etc'
+    - '{{ root_out_destination }}/ceph/var'
+
+- name: Copy bash script which will be the entrypoint for all Ceph containers
+  copy:
+    src: compat.sh
+    dest: '{{ root_out_destination }}/ceph/compat.sh'

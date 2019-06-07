@@ -1,0 +1,5 @@
+---
+- name: Write authentication secret to file
+  copy:
+    src: '{{ root_out_destination }}/ceph/secret'
+    dest: /root/.ceph

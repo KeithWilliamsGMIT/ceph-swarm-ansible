@@ -1,0 +1,21 @@
+---
+- name: Install ceph-common
+  apt:
+    name: ceph-common
+    state: present
+
+- name: Create directory to store data
+  file:
+    path: '{{ ceph_fs_directory }}'
+    state: directory
+    recurse: yes
+
+- name: Mount directory to store data
+  mount:
+    path: '{{ ceph_fs_directory }}'
+    src: '{{ swarm_manager_ips }}:/'
+    fstype: ceph
+    opts: _netdev,name=swarm,secretfile=/root/.ceph
+    state: mounted
+  vars:
+    swarm_manager_ips: "{{ groups['docker_swarm_manager'] | map('extract', hostvars, ['ansible_' + ceph_interface, 'ipv4', 'address']) | join(',') }}"

@@ -1,0 +1,10 @@
+---
+- import_tasks: setup.yml
+
+- import_tasks: configs-and-secrets.yml
+
+- import_tasks: deploy.yml
+
+- import_tasks: configure.yml
+
+- import_tasks: modules.yml
