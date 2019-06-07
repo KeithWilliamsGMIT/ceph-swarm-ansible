@@ -89,11 +89,11 @@ vagrant@node2:~$ exit
 
 Any contribution to this repository is appreciated, whether it is a pull request, bug report, feature request, feedback or even starring the repository. Some potential areas that need further refinement are:
 
-[] Hardening of playbooks
-[] Making playbooks completely idempotent
-[] Improved error handling
-[] Publish to Ansible Galaxy
-[] Documentation
++ Hardening of playbooks
++ Making playbooks completely idempotent
++ Improved error handling
++ Publish to Ansible Galaxy
++ Documentation
 
 ### Conslusion
 This repository demonstates a number of different technologies and how then can be used together. Vagrant is a powerful tool to quickly and cheaply simulate cloud environments locally which is required to test this repository. Running Ceph within Docker Swarm was an interesting experiment and seems to work as expected. Finally, running all of these commands manually everytime we need to deploy Ceph would be extremely time consuming and so Ansible is quite useful in this case and works well with Vagrant.
