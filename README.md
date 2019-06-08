@@ -1,6 +1,6 @@
 # Ceph Swarm Ansible
 
-This repository shows how to setup a Ceph cluster running in Docker Swarm using Ansible to automate the task. This reposioty is heavily based on [ceph-swarm](https://github.com/sepich/ceph-swarm) by sepich. There are other tools and methods of creating a Ceph cluster. This repository was created to learn new technologies and to experiment running Ceph in Docker Swarm.
+This repository shows how to setup a Ceph cluster running in Docker Swarm using Ansible to automate the task. This repository is heavily based on [ceph-swarm](https://github.com/sepich/ceph-swarm) by sepich. There are other tools and methods of creating a Ceph cluster. However, this repository was created to learn new technologies and to experiment with running Ceph in Docker Swarm.
 
 ### Getting Started
 
@@ -25,19 +25,22 @@ vagrant ssh node1
 
 These virtual machines also have a virtual hard disk attached which replicate secondary storage and is used by Ceph. These files are created in the `vagrant/disks` directory and are ignored by Git.
 
-Once the Vagrant cluster is setup we can start deploying the Ceph cluster to them. First install Ansible and then we can use two existing Ansible roles to install Docker and initialise a Docker Swarm. These roles are defined in the `requirements.yml` file and will be installed to `~/.ansible/roles/` by default using the below command:
+Once the Vagrant cluster is setup we can start deploying the Ceph cluster to them. First install Ansible and then we can use two existing Ansible roles to install Docker and initialise a Docker Swarm. These roles are defined in the `requirements.yml` file and will be installed to `~/.ansible/roles/` by default using the below commands:
 
 ```
+cd playbooks/requirements
 ansible-galaxy install -r requirements.yml
 ```
 
 We can install [Docker](https://docs.docker.com/install/) on all the virtual machines now using the `install-docker.yml` playbook as shown below:
 
 ```
+cd playbooks
 ansible-playbook -i ../vagrant/.vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory install-docker.yml
 ```
 
 Similarly, to initialise a Docker Swarm between this cluster of virtual machines we can run the `initialize-swarm.yml` playbook. Note that we set extra variables to override some defaults in the playbook. We want to skip everything except the actual initialisation of Docker Swarm. Also, note that when using this playbook with a cluster of VMs created with Vagrant we need to set another variable to override the default network interface and instead use the private network which is `eth1`.
+
 ```
 ansible-playbook -i ../vagrant/.vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory initialize-swarm.yml --extra-vars="{'skip_engine': 'True', 'skip_group': 'True', 'skip_docker_py': 'True', 'docker_swarm_interface': 'eth1'}"
 ```
@@ -48,7 +51,7 @@ Finally, we can deploy the stack containing all of out Ceph services, including 
 ansible-playbook -i ../vagrant/.vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory deploy-storage.yml --extra-vars="{'ceph_interface': 'eth1'}" --ask-vault-pass --ask-sudo-pass
 ```
 
-The `--ask-vault-pass` flag will prompt you for the vault password to access sensitive data. A default password used in this case, for demostraion purposes in `password`. This playbook creates a directory called `out` by default where a number of files are output to. This directory is ignored by Git.
+The `--ask-vault-pass` flag will prompt you for the vault password to access sensitive data. A default password used in this case, for demostraion purposes, is `password`. This playbook creates a directory called `out` by default where a number of files are output to. This directory is ignored by Git.
 
 ### Does it work?
 
@@ -91,8 +94,9 @@ Any contribution to this repository is appreciated, whether it is a pull request
 
 + Hardening of playbooks
 + Making playbooks completely idempotent
-+ Improved error handling
++ Improve error handling
 + Publish to Ansible Galaxy
++ Choose which Ceph modules are enabled
 + Documentation
 
 ### Conslusion
