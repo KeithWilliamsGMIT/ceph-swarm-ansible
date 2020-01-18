@@ -7,7 +7,7 @@ This repository shows how to setup a Ceph cluster running in Docker Swarm using 
 The first step to getting started is to clone the repository:
 
 ```bash
-git clone https://github.com/KeithWilliamsGMIT/ceph-swarm-ansible
+git clone https://github.com/KeithWilliamsGMIT/ceph-swarm-ansible.git
 ```
 
 We can use Vagrant to quickly spin up a small cluster of virtual machines loaclly to deploy Ceph to. The same steps should work in a cloud environment or with any computers connected by a network. We use Vagrant to create two Ubuntu 18.04 virtual machines by default with the names `node(n)` and with IPv4 addresses of `192.168.2.(n+1)` on a private network through the `eth1` internet interface. To create this cluster first install Vagrant and then follow the commands:
