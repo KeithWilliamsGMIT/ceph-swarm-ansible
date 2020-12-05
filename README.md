@@ -89,6 +89,15 @@ vagrant@node2:~$ ls -al /mnt/ceph/
 vagrant@node2:~$ exit
 ```
 
+## Troubleshooting
+
+Here are a few tips you can try to troubleshoot any issues you may encounter:
+
++ Make sure all services in the storage stack are running as expected.
++ If a service fails to start enable verbose logging on that service, rerun the playbook and inspect the logs for more information.
++ Try adding your user to the `docker` group for each node before rerunning the playbook.
++ Ensure you are setting the correct network interface when running the playbook and that each node can be pinged successfully.
+
 ## Contributing
 
 Any contribution to this repository is appreciated, whether it is a pull request, bug report, feature request, feedback or even starring the repository. Some potential areas that need further refinement are:
