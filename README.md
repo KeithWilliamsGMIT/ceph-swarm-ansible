@@ -84,7 +84,6 @@ vagrant@node1:~$ exit
 
 ubuntu:~/ceph-swarm-ansible/playbooks$ vagrant ssh node2
 ...
-vagrant@node2:~$ ls -al /mnt/ceph/test
 vagrant@node2:~$ ls -al /mnt/ceph/
 -rw-r--r-- 1 root root    0 Jun  7 19:48 test
 vagrant@node2:~$ exit
