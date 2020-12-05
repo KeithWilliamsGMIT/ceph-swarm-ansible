@@ -93,11 +93,12 @@ vagrant@node2:~$ exit
 
 Any contribution to this repository is appreciated, whether it is a pull request, bug report, feature request, feedback or even starring the repository. Some potential areas that need further refinement are:
 
++ Updating playbooks to work with newer versions of Ceph
 + Hardening of playbooks
 + Making playbooks completely idempotent
-+ Improve error handling
-+ Publish to Ansible Galaxy
-+ Choose which Ceph modules are enabled
++ Improving error handling
++ Publishing to Ansible Galaxy
++ Choosing which Ceph modules are enabled
 + Documentation
 
 ## Conclusion

@@ -19,5 +19,12 @@
   command: docker exec {{ monitor_container_id_output.stdout_lines[0] }} ceph fs authorize cephfs client.swarm / rw
   register: ceph_authorisation_secret_output
 
+- name: Create a local output directory for the Ceph authorisation secret
+  file:
+    path: '{{ root_out_destination }}/ceph'
+    state: directory
+    recurse: yes
+  delegate_to: localhost
+
 - name: Parse and save Ceph authorisation secret to a file locally
   local_action: copy content='{{ ceph_authorisation_secret_output.stdout_lines[1].split(" ")[2] }}' dest='{{ root_out_destination }}/ceph/secret'
