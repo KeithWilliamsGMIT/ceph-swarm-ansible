@@ -2,6 +2,8 @@
 
 This repository shows how to setup a Ceph cluster running in Docker Swarm using Ansible to automate the task. This repository is heavily based on [ceph-swarm](https://github.com/sepich/ceph-swarm) by sepich. There are other tools and methods of creating a Ceph cluster. However, this repository was created to learn new technologies and to experiment with running Ceph in Docker Swarm.
 
+**NOTE:** The playbooks in this repository were written and tested with Ceph **Nautilus**. It may not work with newer versions of Ceph out of the box.
+
 ## Getting Started
 
 The first step to getting started is to clone the repository:
@@ -48,7 +50,7 @@ ansible-playbook -i ../vagrant/.vagrant/provisioners/ansible/inventory/vagrant_a
 Finally, we can deploy the stack containing all of our Ceph services, including managers, monitors, OSDs and metadata servers, to Docker Swarm using the `deploy-storage.yml` playbook. Again, similar to what we did when initialising Docker Swarm, we explicitly set the network interface as the default interface on the virtual machines don't point to the private network where they have unique IP addresses.
 
 ```bash
-ansible-playbook -i ../vagrant/.vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory deploy-storage.yml --extra-vars="{'ceph_interface': 'eth1'}" --ask-vault-pass --ask-sudo-pass
+ansible-playbook -i ../vagrant/.vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory deploy-storage.yml --extra-vars="{'ceph_interface': 'eth1'}" --ask-vault-pass --ask-become-pass
 ```
 
 The `--ask-vault-pass` flag will prompt you for the vault password to access sensitive data. A default password used in this case, for demostraion purposes, is `password`. This playbook creates a directory called `out` by default where a number of files are output to. This directory is ignored by Git.
