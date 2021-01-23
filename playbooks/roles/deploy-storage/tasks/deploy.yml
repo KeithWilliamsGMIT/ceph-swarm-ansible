@@ -4,5 +4,10 @@
     src: docker-compose-storage.yml.j2
     dest: '{{ root_out_destination }}/docker-compose-storage.yml'
 
-- name: Deploy storage stack to swarm
-  command: docker stack deploy --with-registry-auth --compose-file {{ root_out_destination }}/docker-compose-storage.yml storage
+- name: Deploy storage stack from compose file
+  docker_stack:
+    state: present
+    name: storage
+    compose:
+      - "{{ root_out_destination }}/docker-compose-storage.yml"
+    with_registry_auth: yes

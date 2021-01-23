@@ -1,5 +1,12 @@
 ---
-- name: Install required python modules for docker
+- name: Install required python modules for Docker
+  pip:
+    name: "{{ item.name }}"
+    state: present
+  with_items:
+  - { name: jsondiff }
+
+- name: Install required python modules for Docker (with specific versions)
   pip:
     name: "{{ item.name }}"
     version: "{{ item.version }}"

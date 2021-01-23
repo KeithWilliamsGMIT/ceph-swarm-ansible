@@ -1,0 +1,5 @@
+---
+- name: Remove storage stack
+  docker_stack:
+    name: storage
+    state: absent

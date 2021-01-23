@@ -1,4 +1,13 @@
 ---
+- hosts: all
+  become: true
+  tasks:
+    - name: Create OSD directory
+      file:
+        path: /mnt/osd
+        state: directory
+        recurse: yes
+
 - hosts: docker_swarm_manager[0]
   become: true
   vars_files:
