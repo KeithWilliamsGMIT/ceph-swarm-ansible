@@ -1,0 +1,19 @@
+---
+- name: Install required python modules for Docker (with specific versions)
+  pip:
+    name: "{{ item.name }}"
+    version: "{{ item.version }}"
+    state: present
+  with_items:
+  - { name: docker-py, version: 1.10.6 }
+
+- name: Create OSD directory
+  file:
+    path: /mnt/osd
+    state: directory
+    recurse: yes
+
+- name: Pull Ceph Docker image
+  docker_image:
+    name: ceph/daemon:{{ ceph_version }}
+    source: pull

@@ -1,6 +1,0 @@
----
-- import_tasks: prepare.yml
-
-- import_tasks: authorise.yml
-
-- import_tasks: mount.yml
