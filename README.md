@@ -89,6 +89,16 @@ vagrant@node2:~$ ls -al /mnt/ceph/
 vagrant@node2:~$ exit
 ```
 
+## Using this role
+
+To use this role add the following to your `requirements.yml` file:
+
+```
+- src: https://github.com/KeithWilliamsGMIT/ceph-swarm-ansible.git
+  version: master
+  name: deploy-storage
+```
+
 ## Troubleshooting
 
 Here are a few tips you can try to troubleshoot any issues you may encounter:
@@ -109,6 +119,7 @@ Any contribution to this repository is appreciated, whether it is a pull request
 + Publishing to Ansible Galaxy
 + Choosing which Ceph modules are enabled
 + Documentation
++ Upgrade to Ceph 15 (Octopus)
 
 ## Conclusion
 
