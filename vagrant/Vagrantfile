@@ -2,6 +2,8 @@ BOX_IMAGE = "bento/ubuntu-18.04"
 SWARM_MANAGER_COUNT = 1
 SWARM_WORKER_COUNT = 1
 NODE_COUNT = SWARM_MANAGER_COUNT + SWARM_WORKER_COUNT
+TLD = test
+DOMAIN_NAME = app.#{TLD}
 
 Vagrant.configure("2") do |config|
   # Create VMs in a loop
@@ -13,6 +15,11 @@ Vagrant.configure("2") do |config|
       # as it is often  used by the router and can cause issues
       # with the network.
       node.vm.network :private_network, ip: "192.168.2.#{i + 1}"
+
+      if i == 1
+        node.dns.tld = #{TLD}
+        node.dns.patterns = [/^(\w+\.)#{DOMAIN_NAME}$/, /^#{DOMAIN_NAME}$/]
+      end
 
       disk_name = "./disks/disk#{i}.vdi"
 
@@ -33,6 +40,7 @@ Vagrant.configure("2") do |config|
       ansible.groups = {
         "docker_swarm_manager" => ["node[1:#{SWARM_MANAGER_COUNT}]"],
         "docker_swarm_worker" => ["node[#{SWARM_MANAGER_COUNT}:#{NODE_COUNT}]"]
+        "vagrant" => ["node[1:#{NODE_COUNT}]"]
       }
     end
   end
