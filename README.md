@@ -51,10 +51,10 @@ ubuntu:~/vagrant-swarm-ansible/playbooks$ vagrant ssh node1
 ...
 vagrant@node1:~$ sudo docker service ls
 ID                  NAME                MODE                REPLICAS            IMAGE                           PORTS
-k2h00xetv8e6        storage_mds         replicated          2/2                 ceph/daemon:latest
-b8b0ic2eq8ru        storage_mgr         replicated          1/1                 ceph/daemon:latest
-p4ao16o126w1        storage_mon         global              1/1                 ceph/daemon:latest
-wrdzdyw2u0fs        storage_osd         global              2/2                 ceph/daemon:latest
+k2h00xetv8e6        storage_mds         replicated          2/2                 ceph/daemon:latest-nautilus
+b8b0ic2eq8ru        storage_mgr         replicated          1/1                 ceph/daemon:latest-nautilus
+p4ao16o126w1        storage_mon         global              1/1                 ceph/daemon:latest-nautilus
+wrdzdyw2u0fs        storage_osd         global              2/2                 ceph/daemon:latest-nautilus
 ```
 
 We can check if the files are accessible from both nodes by sshing into `node1` and creating a file in the `/mnt/ceph` directoy. Then sshing into `node2` and checking if the changes are reflected in the same folder.
