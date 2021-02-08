@@ -2,7 +2,3 @@
 /playbooks/out
 *.retry
 *.cache
-
-# Vagrant
-.vagrant/
-**/disks/disk*.vdi
